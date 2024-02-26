@@ -168,7 +168,7 @@ const MainLayout = () => {
           }}
         >
           {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+            collapsed ? 'unfold' : 'fold',
             {
               className: "trigger",
               onClick: () => setCollapsed(!collapsed),
