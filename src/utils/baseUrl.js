@@ -1,1 +1,1 @@
-export const base_url = "http://localhost:5000/api/";
+export const base_url = "https://kachelan-us-backend-production.up.railway.app";
