@@ -1,7 +1,9 @@
 import React from "react";
 import { BsArrowDownRight } from "react-icons/bs";
- 
+
 import { Table } from "antd";
+import axios from "axios";
+import { base_url } from "../utils/baseUrl";
 const columns = [
   {
     title: "SNo",
@@ -109,6 +111,19 @@ const Dashboard = () => {
       },
     },
   };
+
+
+  // const handleClick = async (e) => {
+  //   e.preventDefault();
+  //   const payload = { email: 'test@mailinator.com', firstName: 'John', lastName: "Doe" }
+  //   try {
+  //     const res = await axios.post(`${base_url}/api/v1/admin/invite`, payload)
+  //     console.log(res)
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+
   return (
     <div>
       <h3 className="mb-4 title">Dashboard</h3>
@@ -152,7 +167,7 @@ const Dashboard = () => {
       </div>
       <div className="mt-4">
         <h3 className="mb-5 title">Income Statics</h3>
-        
+
       </div>
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Orders</h3>

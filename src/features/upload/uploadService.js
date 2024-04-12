@@ -1,14 +1,23 @@
 import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+import { config, getTokenFromLocalStorage } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const uploadImg = async (data) => {
-  const response = await axios.post(`${base_url}upload/`, data, config);
+  const response = await axios.post(`${base_url}/api/v1/product/image`, data, {
+    headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage : ""
+    }`,
+    "Content-Type": "multipart/form-data",
+  },});
+  console.log(response.data)
   return response.data;
 };
+
+
 const deleteImg = async (id) => {
   const response = await axios.delete(
-    `${base_url}upload/delete-img/${id}`,
+    `${base_url}/api/v1/product/image/remove${id}`,
 
     config
   );

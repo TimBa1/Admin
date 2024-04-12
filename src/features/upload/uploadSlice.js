@@ -3,11 +3,12 @@ import uploadService from "./uploadService";
 
 export const uploadImg = createAsyncThunk(
   "upload/images",
-  async (data, thunkAPI) => {
+  async (data, productSlug, thunkAPI) => {
     try {
       const formData = new FormData();
+      formData.append("productSlug",productSlug );
       for (let i = 0; i < data.length; i++) {
-        formData.append("images", data[i]);
+        formData.append("file", data[i]);
       }
       return await uploadService.uploadImg(formData);
     } catch (error) {
@@ -15,6 +16,24 @@ export const uploadImg = createAsyncThunk(
     }
   }
 );
+
+
+
+// export const uploadImg = createAsyncThunk(
+//   "upload/images",
+//   async (data, productSlug, thunkAPI) => {
+//     try {
+//       const formData = new FormData();
+//       for (let i = 0; i < data.length; i++) {
+//         formData.append("productSlug",productSlug );
+//         formData.append("file", data[i]);
+//       }
+//       return await uploadService.uploadImg(formData);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error);
+//     }
+//   }
+// );
 export const delImg = createAsyncThunk(
   "delete/images",
   async (id, thunkAPI) => {

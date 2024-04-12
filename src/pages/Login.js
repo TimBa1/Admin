@@ -32,13 +32,14 @@ const Login = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("admin");
+      navigate("/admin");
+      window.location.reload();
     } else {
       navigate("");
     }
   }, [user, isError, isSuccess, isLoading]);
   return (
-    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
+    <div className="py-5" style={{ background: "#0057FF", minHeight: "100vh" }}>
       <br />
       <br />
       <br />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import {
   AiOutlineDashboard,
@@ -18,13 +18,35 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+import { getAdmin, logout } from "../features/auth/authSlice";
+
+
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+const {accessToken}= useSelector(state=> state.auth)
+  useEffect(() => {
+		if (accessToken !== null) {
+			navigate("/admin");
+		}else{
+      navigate('/')
+    }
+	}, [accessToken]);
+
+  useEffect(() => {
+    dispatch((getAdmin()))
+  }, [dispatch,accessToken]);
+
+
+const {user} = useSelector((state)=>state.auth)
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const navigate = useNavigate();
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -187,8 +209,8 @@ const MainLayout = () => {
                 <img
                   width={32}
                   height={32}
-                  src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
-                  alt=""
+                  src={user?.user?.userImage}
+                  alt="no img"
                 />
               </div>
               <div
@@ -197,8 +219,8 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Navdeep</h5>
-                <p className="mb-0">navdeepdahiya753@gmail.com</p>
+                <h5 className="mb-0">{user?.user?.firstName}</h5>
+                <p className="mb-0">{user?.user?.email}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -211,13 +233,7 @@ const MainLayout = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
-                  >
-                    Signout
-                  </Link>
+                <div className='button' style={{ cursor: "pointer" }} onClick={() => dispatch(logout())}>Logout</div>
                 </li>
               </div>
             </div>

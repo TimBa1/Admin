@@ -76,3 +76,114 @@ main::-webkit-scrollbar {
   color: red;
   font-size: 12px;
 }
+
+.filter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-body {
+  padding: 20px;
+}
+
+table.table {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+th {
+  font-weight: 500;
+  font-size: 0.8rem;
+  border: 0;
+}
+thead {
+  background: #f9fafb;
+  color: #101828;
+  text-transform: uppercase;
+  border: 1px solid #c4c7db;
+}
+.pagination-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 991px) {
+  .pagination-filter {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pagination-filter .select {
+    margin-bottom: 15px;
+  }
+  .pagination-filter .infos {
+    margin-top: 15px;
+  }
+}
+
+.pagination-filter .select select {
+  border: 1px solid #c4c7db;
+  outline: 0;
+  height: 38px;
+  border-radius: 4px;
+  padding-left: 5px;
+  margin-right: 5px;
+  color: #333;
+}
+
+.pagination-filter .select span {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.pagination-filter .main-pagination {
+  display: flex;
+  align-items: center;
+}
+
+.main-pagination{
+  display: flex;
+  gap: 5px;
+}
+.active{
+  background-color: blue;
+  color: white;
+  border: 1px solid blue;
+}
+@media (max-width: 991px) {
+  .pagination-filter .main-pagination .keys {
+    display: none;
+  }
+}
+
+.pagination-filter .main-pagination button {
+  outline: 0;
+  margin: 0 8px;
+  background: #fff;
+  padding: 5px 14px;
+  border-radius: 3px;
+}
+
+.pagination-filter button {
+  background: blue;
+  color: #fff;
+}
+
+ .infos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #edeef0;
+  padding: 10px 30px;
+  border-radius: 4px;
+}
+
+.pagination-filter .infos p {
+  margin: 0;
+  padding: 0;
+  color: #666666;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

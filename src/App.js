@@ -24,14 +24,16 @@ import Couponlist from "./pages/Couponlist";
 import AddCoupon from "./pages/AddCoupon";
 import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
+import UpdateAdmin from "./pages/UpdateAdmin";
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/signin" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/admin/update" element={<UpdateAdmin/>} />
+        <Route path="/admin" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="enquiries" element={<Enquiries />} />
           <Route path="enquiries/:id" element={<ViewEnq />} />
@@ -57,7 +59,8 @@ function App() {
           <Route path="brand" element={<Addbrand />} />
           <Route path="brand/:id" element={<Addbrand />} />
           <Route path="list-product" element={<Productlist />} />
-          <Route path="product" element={<Addproduct />} />
+          <Route path="product/" element={<Addproduct />} />
+          <Route path="product/:id" element={<Addproduct />} />
         </Route>
       </Routes>
     </Router>

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+import { config, getTokenFromLocalStorage } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 const getBrands = async () => {
-  const response = await axios.get(`${base_url}brand/`);
+  const response = await axios.get(`${base_url}/api/v1/brand/all`);
 
   return response.data;
 };
@@ -28,7 +28,12 @@ const getBrand = async (id) => {
 };
 
 const deleteBrand = async (id) => {
-  const response = await axios.delete(`${base_url}brand/${id}`, config);
+  const response = await axios.delete(`${base_url}brand/${id}`,  {
+    headers: {
+      Authorization: `Bearer ${getTokenFromLocalStorage}`,
+      "Content-Type": "application/json"
+    }
+  });
 
   return response.data;
 };

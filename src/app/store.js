@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore,combineReducers  } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import customerReducer from "../features/cutomers/customerSlice";
 import productReducer from "../features/product/productSlice";
@@ -10,8 +10,10 @@ import colorReducer from "../features/color/colorSlice";
 import enquiryReducer from "../features/enquiry/enquirySlice";
 import uploadReducer from "../features/upload/uploadSlice";
 import couponReducer from "../features/coupon/couponSlice";
-export const store = configureStore({
-  reducer: {
+import storage from 'redux-persist/lib/storage'
+import { persistReducer, FLUSH, REHYDRATE, PERSIST, REGISTER, PAUSE,PURGE } from 'redux-persist'
+
+const rootReducer = combineReducers({
     auth: authReducer,
     customer: customerReducer,
     product: productReducer,
@@ -23,5 +25,21 @@ export const store = configureStore({
     enquiry: enquiryReducer,
     upload: uploadReducer,
     coupon: couponReducer,
-  },
 });
+
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage,
+  whitelist: ['auth',''],
+
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+  reducer:persistedReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck:{
+      ignoreActions:[FLUSH,REHYDRATE,PAUSE,PERSIST,PURGE,REGISTER]
+  }})
+})
