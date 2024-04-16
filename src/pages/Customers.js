@@ -40,7 +40,8 @@ const Customers = () => {
     enabled: props?.user?.enabled,
     number: props?.user?.phoneNumber,
     gender: props?.user?.gender,
-    verified: props?.user?.verified
+    verified: props?.user?.verified,
+    id:props?.user?.id
 
   }))
 
@@ -67,8 +68,10 @@ const Customers = () => {
               {!load && users?.length > 0 && (
                 <tbody>
                   {users?.map(
+                    
                     (tr, i) => (
-                      <tr key={tr.id}>
+                      
+                      <tr key={i}>
                         <td>
                           {limits * (page - 1) +
                             i +
@@ -82,12 +85,11 @@ const Customers = () => {
                         <td>{tr?.enabled === true ? "True" : "False"}</td>
                         <td>{tr?.verified === true ? "True" : "False"}</td>
                         <td><img style={{ height: "50px", width: "50px", borderRadius: "50%" }} src={tr.image} alt="no-img" /></td>
-
+                        <td>{tr.id}</td>
                         <td>
                           <span>
-                            <Link to='/'
-                              state={tr}>
-                              <BiEdit /></Link>
+                            <Link to={`/admin/customer-order/${tr?.id}`}>
+                              View Customer</Link>
                           </span>
                           <span>
                             <AiOutlineDelete />

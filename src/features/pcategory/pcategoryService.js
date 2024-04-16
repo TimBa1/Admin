@@ -2,8 +2,8 @@ import axios from "axios";
 import { base_url } from "../../utils/baseUrl";
 import { config, getTokenFromLocalStorage } from "../../utils/axiosconfig";
 
-const getProductCategories = async () => {
-  const response = await axios.get(`${base_url}/api/v1/category/all`);
+const getProductCategories = async (filters) => {
+  const response = await axios.get(`${base_url}/api/v1/category/all${filters}`);
 
   return response.data;
 };

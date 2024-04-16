@@ -22,6 +22,8 @@ const updateAdmin = async (payload) => {
 
 
 
+
+///ORDERS
 const getOrders = async ( filters ) => {
   const response = await axios.get(`${base_url}/api/v1/order/all${filters}`, config);
 
@@ -29,14 +31,24 @@ const getOrders = async ( filters ) => {
 };
 
 
-const getOrder = async (orderSlug) => {
+const getCustomerOrder = async (customerId,filters) => {
   const response = await axios.get(
-    `${base_url}/api/v1/order${orderSlug}`,
+    `${base_url}/api/v1/order/customer/${customerId}${filters}`,
     config
   );
-
   return response.data;
 };
+
+const getRecentOrders = async (filters) => {
+  const response = await axios.get(
+    `${base_url}/api/v1/order/recent${filters}`,
+    config
+  );
+  return response.data;
+};
+
+
+
 
 const getAdmin = async () => {
   const response = await axios.get(
@@ -54,7 +66,8 @@ const getAdmin = async () => {
 const authService = {
   login,
   getOrders,
-  getOrder,
+  getCustomerOrder,
+  getRecentOrders,
   getAdmin,
   updateAdmin,
 };

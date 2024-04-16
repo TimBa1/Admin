@@ -3,9 +3,9 @@ import pCategoryService from "./pcategoryService";
 
 export const getCategories = createAsyncThunk(
   "productCategory/get-categories",
-  async (thunkAPI) => {
+  async (filters,thunkAPI) => {
     try {
-      return await pCategoryService.getProductCategories();
+      return await pCategoryService.getProductCategories(filters);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

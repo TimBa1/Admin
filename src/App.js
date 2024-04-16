@@ -25,6 +25,7 @@ import AddCoupon from "./pages/AddCoupon";
 import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
 import UpdateAdmin from "./pages/UpdateAdmin";
+import ViewCustomerOrder from "./pages/ViewCustomerOrder";
 function App() {
   return (
     <Router>
@@ -53,6 +54,7 @@ function App() {
           <Route path="color" element={<Addcolor />} />
           <Route path="color/:id" element={<Addcolor />} />
           <Route path="list-category" element={<Categorylist />} />
+          <Route path="customer-order/:id" element={<ViewCustomerOrder />} />
           <Route path="category" element={<Addcat />} />
           <Route path="category/:id" element={<Addcat />} />
           <Route path="list-brand" element={<Brandlist />} />

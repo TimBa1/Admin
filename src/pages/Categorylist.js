@@ -1,104 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import Paginate from "../components/Paginate";
+import pCategoryService from "../features/pcategory/pcategoryService";
+import { toast } from "react-toastify";
+import { AiOutlineDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
-import { AiFillDelete } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  deleteAProductCategory,
-  getCategories,
-  resetState,
-} from "../features/pcategory/pcategorySlice";
-import CustomModal from "../components/CustomModal";
 
-const columns = [
-  {
-    title: "SNo",
-    dataIndex: "key",
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    sorter: (a, b) => a.name.length - b.name.length,
-  },
-  {
-    title: "Image",
-    dataIndex: "image",
-  }
-,
-  {
-    title: "Action",
-    dataIndex: "action",
-  },
-];
 
 const Categorylist = () => {
-  const [open, setOpen] = useState(false);
-  const [pCatId, setpCatId] = useState("");
-  const showModal = (e) => {
-    setOpen(true);
-    setpCatId(e);
-  };
 
-  const hideModal = () => {
-    setOpen(false);
-  };
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(resetState());
-    dispatch(getCategories());
-  }, []);
+  const [page, setPage] = useState(1);
+  const [limits, setLimits] = useState(20);
+  const [load, setLoad] = useState(false)
+  const [productState, setProductState] = useState([])
+
+  const filters = `?page=${page}&limit=${limits}`
 
 
-  const pCatStat = useSelector((state) => state.pCategory.pCategories);
-
-  const data1 = [];
-
-
-  for (let i = 0; i < pCatStat?.content?.length; i++) {
-    data1.push({
-      key: i + 1,
-      name: pCatStat?.content[i]?.name,
-      image:(<img style={{width:"70px", height:"70px", borderRadius:"20px"}} src={pCatStat?.content[i]?.imageUrl} alt="no img"/>),
-      action: (
-        <>
-          <Link
-            to={`/admin/category/${pCatStat?.content[i]?.slug}`}
-            className=" fs-3 text-danger"
-          >
-            <BiEdit />
-          </Link>
-          <button
-            className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(pCatStat?.content[i]?.id)}
-          >
-            <AiFillDelete />
-          </button>
-        </>
-      ),
-    });
+  const getProducts = async () => {
+    setLoad(true)
+    try {
+      const res = await pCategoryService.getProductCategories(filters);
+      setLoad(false)
+      setProductState(res)
+    } catch (error) {
+      toast.error("Something Went Wrong!");
+    }
   }
-  const deleteCategory = (e) => {
-    dispatch(deleteAProductCategory(e));
-    setOpen(false);
-    setTimeout(() => {
-      dispatch(getCategories());
-    }, 100);
-  };
+  console.log(productState)
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getProducts();
+  }, [page, limits]);
+
+
   return (
     <div>
-      <h3 className="mb-4 title">Product Categories</h3>
-      <div>
-        <Table columns={columns} dataSource={data1} />
+      <h3 className="mb-4 title">Categories</h3>
+      <div className="body">
+        <div className="table-body">
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Name</th>
+                  <th>image</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              {!load && productState.content?.length > 0 && (
+                <tbody>
+                  {productState.content?.map(
+
+                    (tr, i) => (
+
+                      <tr key={i}>
+                        <td>
+                          {limits * (page - 1) +
+                            i +
+                            1}
+                        </td>
+                        <td>{tr?.name}</td>
+                        <td><img style={{ height: "50px", width: "50px", borderRadius: "50%" }} src={tr.imageUrl} alt="no-img" /></td>
+                        <td>
+                          <span>
+                            <Link to={`/admin/category/${tr.slug}`}
+                              state={tr}>
+                              <BiEdit /></Link>
+                          </span>
+                          <span>
+
+                            <AiOutlineDelete />
+                          </span>
+                        </td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              )}
+            </table>
+          </div>
+          {!load && productState?.totalPages > 1 && (
+            <Paginate
+              currentPage={page}
+              totalCount={productState?.totalElements}
+              pageSize={limits}
+              lastPage={productState.totalPages}
+              onSelect={(p) => setPage(Number(p))}
+              onNext={(p) => setPage(p)}
+              onPrev={(p) => setPage(p)}
+              changeLimit={(p) =>
+                setLimits(Number(p))
+              }
+            />
+          )}
+          {load && 'Loading...'}
+        </div>
       </div>
-      <CustomModal
-        hideModal={hideModal}
-        open={open}
-        performAction={() => {
-          deleteCategory(pCatId);
-        }}
-        title="Are you sure you want to delete this Product Category?"
-      />
     </div>
   );
 };

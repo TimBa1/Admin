@@ -1,7 +1,7 @@
 import { React, useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -15,12 +15,15 @@ import {
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
 let schema = yup.object().shape({
   name: yup.string().required("Category Name is Required"),
-  image:yup.string()
+  image: yup.string()
 });
 const Addcat = () => {
+
+  const { id } = useParams();
+
+  const details = useLocation().state;
+
   const dispatch = useDispatch();
-  const location = useLocation();
-  const getPCatId = location.pathname.split("/")[3];
   const navigate = useNavigate();
   const newCategory = useSelector((state) => state.pCategory);
   const imgState = useSelector((state) => state.upload.images);
@@ -29,16 +32,9 @@ const Addcat = () => {
     isError,
     isLoading,
     createdCategory,
-    categoryName,
     updatedCategory,
   } = newCategory;
-  useEffect(() => {
-    if (getPCatId !== undefined) {
-      dispatch(getAProductCategory(getPCatId));
-    } else {
-      dispatch(resetState());
-    }
-  }, [getPCatId]);
+
   useEffect(() => {
     if (isSuccess && createdCategory) {
       toast.success("Category Added Successfullly!");
@@ -51,16 +47,18 @@ const Addcat = () => {
       toast.error("Something Went Wrong!");
     }
   }, [isSuccess, isError, isLoading]);
+
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: categoryName || "",
-      
+      name: details?.name || "",
+
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      if (getPCatId !== undefined) {
-        const data = { id: getPCatId, pCatData: values };
+      if (id !== undefined) {
+        const data = { id, pCatData: values };
         dispatch(updateAProductCategory(data));
         dispatch(resetState());
       } else {
@@ -75,7 +73,7 @@ const Addcat = () => {
   return (
     <div>
       <h3 className="mb-4  title">
-        {getPCatId !== undefined ? "Edit" : "Add"} Category
+        {id !== undefined ? "Edit" : "Add"} Category
       </h3>
       <div>
         <form action="" onSubmit={formik.handleSubmit}>
@@ -84,8 +82,9 @@ const Addcat = () => {
             label="Enter Product Category"
             onChng={formik.handleChange("name")}
             onBlr={formik.handleBlur("name")}
-            val={formik.values.title}
+            val={formik.values.name}
             id="brand"
+            name='name'
           />
           <div className="bg-white border-1 p-5 text-center">
             <Dropzone
@@ -125,7 +124,7 @@ const Addcat = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            {getPCatId !== undefined ? "Edit" : "Add"} Category
+            {id !== undefined ? "Edit" : "Add"} Category
           </button>
         </form>
       </div>

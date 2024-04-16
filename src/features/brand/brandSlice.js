@@ -3,9 +3,9 @@ import brandService from "./brandService";
 
 export const getBrands = createAsyncThunk(
   "brand/get-brands",
-  async (thunkAPI) => {
+  async (filter,thunkAPI) => {
     try {
-      return await brandService.getBrands();
+      return await brandService.getBrands(filter);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
